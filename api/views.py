@@ -6,6 +6,7 @@ from hashlib import md5
 import random
 import string
 
+
 from .models import Url
 # Create your views here.
 
@@ -20,6 +21,7 @@ def link_input(request):
         print(short_url)
         print("ok")
         url = Url(original_url=original_url,short_url=short_url)
+
         url.save()
         return render(request,'api/index.html',{
             'original_url' : original_url,
@@ -36,3 +38,18 @@ def link_output(request,id):
         return redirect(obj.original_url)
     except:
         return redirect(link_input)
+
+
+# def user_sign(request,user):
+#     try:
+#         obj = User.objects.get(user=username)
+#         user_id = obj.id
+#         return redirect(link_input(request,user_id))
+#     except:
+#         return HttpResponse("no user found")
+
+def req(request):
+    # print(request.JSON)
+    x= request.POST.get("email")
+    print(x)
+    return HttpResponse("hello"+x)
