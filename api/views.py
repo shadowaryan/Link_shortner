@@ -5,9 +5,9 @@ from django.http import HttpResponse
 from hashlib import md5
 import random
 import string
+import json
 
-
-from .models import Url
+from .models import Url, User
 # Create your views here.
 
 def link_input(request):
@@ -50,6 +50,8 @@ def link_output(request,id):
 
 def req(request):
     # print(request.JSON)
-    x= request.POST.get("email")
-    print(x)
-    return HttpResponse("hello"+x)
+    req_data = json.loads(request.body.decode('utf-8'))
+    data = User(email=req_data['email'],password=req_data['password'])
+    data.save()
+    print(req_data)
+    return HttpResponse("hello")

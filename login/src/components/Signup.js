@@ -54,6 +54,7 @@ const Signup = () => {
 
   const onFinish = (values) => {
     axios.post('http://localhost:8000/req/', values)
+    console.log(values);
     
     // Axios({
     //   method: 'post',
