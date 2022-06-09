@@ -5,10 +5,11 @@ import {
   Input,
 } from "antd";
 import axios from "axios";
-
+import NavBars from "./NavBars";
 
 import "antd/dist/antd.css";
 import "../index.css";
+
 
 axios.defaults.withCredentials = true
 
@@ -66,6 +67,8 @@ const Signup = () => {
 
   
   return (
+    <>
+    <NavBars/>
     <Form
       {...formItemLayout}
       form={form}
@@ -138,6 +141,7 @@ const Signup = () => {
         Or already have an account.<a href='http://localhost:3000/login'>login..!</a>
       </Form.Item>
     </Form>
+    </>
   );
 };
 

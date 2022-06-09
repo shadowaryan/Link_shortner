@@ -1,6 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from django.http import JsonResponse
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from hashlib import md5
 import random
@@ -8,6 +12,8 @@ import string
 import json
 
 from .models import Url, User
+from .serializers import UserSerializer,UrlSerializer
+
 # Create your views here.
 
 def link_input(request):
@@ -55,3 +61,11 @@ def req(request):
     data.save()
     print(req_data)
     return HttpResponse("hello")
+
+
+@api_view(['GET'])
+def out(request):
+    if request.method == 'GET':
+        data = User.objects.all()
+        serializer = UserSerializer(data,many=True)
+        return Response(serializer.data)
