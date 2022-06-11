@@ -26,21 +26,29 @@ def link_input(request):
         short_url = ''.join((random.choice(letters+string.digits)) for x in range(length))
         print(short_url)
         print("ok")
-        url = Url(original_url=original_url,short_url=short_url)
-
-        url.save()
-        return render(request,'api/index.html',{
+        if Url.objects.filter(original_url=original_url).exists() == False:
+            url = Url(original_url=original_url,short_url=short_url,counts=0)
+            print('here')
+            url.save()
+            
+            return render(request,'api/index.html',{
             'original_url' : original_url,
             'short_url' : request.get_host() + '/' + short_url
-        })
+            })
+            
+        else :
+            print('no')
+            return render(request,'api/index.html',{'original_url' : 'Given Url : ' +'\''+original_url+'\''+'  '+' is already in database.'})
 
-    print("hello")
     return render(request,'api/index.html')
-
 
 def link_output(request,id):
     try:
         obj = Url.objects.get(short_url=id)
+        counts = obj.counts+1
+        count = Url(counts=counts)
+        count.save()
+        print(obj.counts)
         return redirect(obj.original_url)
     except:
         return redirect(link_input)
@@ -68,4 +76,12 @@ def out(request):
     if request.method == 'GET':
         data = User.objects.all()
         serializer = UserSerializer(data,many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def url(request):
+    if request.method == 'GET':
+        data = Url.objects.all()
+        serializer = UrlSerializer(data,many=True)
         return Response(serializer.data)
