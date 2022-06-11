@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User,Url
+from .models import User,Url,HeaderData
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -10,4 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
 class UrlSerializer(serializers.ModelSerializer):
     class Meta:
         model = Url
+        fields = '__all__'
+
+class HeaderDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HeaderData
         fields = '__all__'

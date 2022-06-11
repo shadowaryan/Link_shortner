@@ -1,3 +1,4 @@
+from turtle import update
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -11,10 +12,17 @@ class User(models.Model):
 
 
 class Url(models.Model):
-    # user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user= models.ForeignKey(User,on_delete=models.CASCADE)
     original_url = models.CharField(max_length=512)
     short_url = models.CharField(max_length=32)
-    counts = models.IntegerField(max_length=2)
+    counts = models.IntegerField()
+
 
     def __str__(self):
         return self.original_url
+
+
+class HeaderData(models.Model):
+    updated = models.DateTimeField(auto_now=True)
+    url = models.ForeignKey(Url,on_delete=models.CASCADE)
+    header_data = models.CharField(max_length=2048)

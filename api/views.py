@@ -11,8 +11,8 @@ import random
 import string
 import json
 
-from .models import Url, User
-from .serializers import UserSerializer,UrlSerializer
+from .models import HeaderData, Url, User
+from .serializers import UserSerializer,UrlSerializer,HeaderDataSerializer
 
 # Create your views here.
 
@@ -27,7 +27,7 @@ def link_input(request):
         print(short_url)
         print("ok")
         if Url.objects.filter(original_url=original_url).exists() == False:
-            url = Url(original_url=original_url,short_url=short_url,counts=0)
+            url = Url(original_url=original_url,short_url=short_url,counts=0,user=User.objects.get(id='1'))
             print('here')
             url.save()
             
@@ -45,9 +45,12 @@ def link_input(request):
 def link_output(request,id):
     try:
         obj = Url.objects.get(short_url=id)
+        header = request.headers
+        hdata = HeaderData(url=Url.objects.get(id=obj.id) ,header_data=header)
         counts = obj.counts+1
-        count = Url(counts=counts)
-        count.save()
+        obj.counts = counts
+        obj.save()
+        hdata.save()
         print(obj.counts)
         return redirect(obj.original_url)
     except:
@@ -84,4 +87,11 @@ def url(request):
     if request.method == 'GET':
         data = Url.objects.all()
         serializer = UrlSerializer(data,many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def req_data(request):
+    if request.method == 'GET':
+        data = HeaderData.objects.all()
+        serializer = HeaderDataSerializer(data,many=True)
         return Response(serializer.data)
