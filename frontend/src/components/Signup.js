@@ -26,15 +26,16 @@ const Signup = () => {
     if(confirmPassword === password && email !== '' && password !== '' && userName !== '' && confirmPassword !== ''){
       
       axios.post('http://localhost:8000/req/',{email: email, password: password, username: userName})
-      console.log({email: email, password: password, username: userName});
+      data = {email: email, password: password, username: userName} 
+      console.log(data);
       
       // axios({
       //   method: 'post',
       //   url: 'http://localhost:8000/req/',
       //   data: {email: email, password: password, userName: userName},
       // });
-    console.log("Received values of form: ", email , password, confirmPassword, userName);
-    navigate('/login');
+    // console.log("Received values of form: ", email , password, confirmPassword, userName);
+    // navigate('/login');
   }
   else{
     alert("Password and Confirm Password do not match OR some field in form is empty")}};
