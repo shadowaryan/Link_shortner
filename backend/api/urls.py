@@ -7,9 +7,9 @@ from rest_framework_simplejwt.views import (
 
 
 urlpatterns = [
-    path('', views.link_input),
-    path('<id>',views.link_output),
-    path('req/', views.req),
+    path('', views.create_short_link),
+    path('<id>',views.redirect_shortlink),
+    path('req/', views.storing_user_info),
     # path('<user>',views.user_sign),
     path('user/', views.out),
     path('url/', views.url),

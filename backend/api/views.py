@@ -16,7 +16,7 @@ from .serializers import UserSerializer,UrlSerializer,HeaderDataSerializer
 
 # Create your views here.
 
-def link_input(request):
+def create_short_link(request):
     if request.method == 'POST':
         original_url = request.POST.get('original_url')
         print(original_url)
@@ -42,7 +42,18 @@ def link_input(request):
 
     return render(request,'api/index.html')
 
-def link_output(request,id):
+def visitor_ip_address(request):
+
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    print(ip)
+
+
+def redirect_shortlink(request,id):
     try:
         obj = Url.objects.get(short_url=id)
         header = request.headers
@@ -52,9 +63,10 @@ def link_output(request,id):
         obj.save()
         hdata.save()
         print(obj.counts)
+        visitor_ip_address(request)
         return redirect(obj.original_url)
     except:
-        return redirect(link_input)
+        return redirect(create_short_link)
 
 
 # def user_sign(request,user):
@@ -65,7 +77,7 @@ def link_output(request,id):
 #     except:
 #         return HttpResponse("no user found")
 
-def req(request):
+def storing_user_info(request):
     # print(request.JSON)
     req_data = json.loads(request.body.decode('utf-8'))
     data = User(email=req_data['email'],password=req_data['password'])
