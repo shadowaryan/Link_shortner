@@ -107,3 +107,12 @@ def req_data(request):
         data = HeaderData.objects.all()
         serializer = HeaderDataSerializer(data,many=True)
         return Response(serializer.data)
+
+def login_verification(request):
+    if request.method == 'POST':
+        req_data = json.loads(request.body.decode('utf-8'))
+        try:
+            if User.objects.filter(email=req_data['email'],password=req_data['password']).exists():
+                return redirect(create_short_link)
+        except:
+            return HttpResponse("login failed")
