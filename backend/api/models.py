@@ -12,13 +12,13 @@ from django.contrib.auth.models import AbstractUser
 #     password = models.CharField(max_length=128)
 
 class User(AbstractUser):
+    email = models.EmailField(max_length=128,unique=True)
+    password = models.CharField(max_length=128)
+    username = models.CharField(max_length=128,unique=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    email = models.EmailField(max_length=128,unique=True)
-    password = models.CharField(max_length=128)
-    username = models.CharField(max_length=128,unique=True)
 
 
 class Url(models.Model):
