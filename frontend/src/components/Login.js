@@ -1,11 +1,11 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import '../index.css';
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Row, Col } from 'antd';
+
+import { Input, Row, Col } from 'antd';
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 
 // const Login = () => {
 //   const onFinish = (values) => {
@@ -79,24 +79,30 @@ import { Link } from "react-router-dom";
 const Login = () => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    // function handleSubmit(e) {
-    //     e.preventDefault();
-    //     console.log(e);
+    function handleSubmit() {
+        // e.preventDefault();
+        // console.log(e);
+        console.log(email);
+        axios.post('http://localhost:8000/login_verification/',{email: email, password: password
+         }).then(res =>{ 
+            if(res.status===200){console.log(res.status)}})
+            .catch(err => {console.log(err.response.status)})
+        
 
-    //     unauthaxios.post('/auth/token', {
-    //         email: email,
-    //         password: password,
-    //     }).then(res => {
-    //         if (res.status === 200) {
-    //         localStorage.setItem('accessToken', res.data.access);
-    //         localStorage.setItem('refreshToken', res.data.refresh);
-    //         navigate('/');
-    //         }
-    //     })
+        axios.post('http://localhost:8000/token/', {
+            email: email,
+            password: password,
+        }).then(res => {
+            if (res.status === 200) {
+            localStorage.setItem('accessToken', res.data.access);
+            localStorage.setItem('refreshToken', res.data.refresh);
+            navigate('/');
+            }
+        })
 
-    // }
+    }
 
 
     return (
@@ -120,8 +126,8 @@ const Login = () => {
                         padding: '0.5% 7%',
                         borderRadius: '12px',
                         fontSize: '0.8rem',
-                        background: "linear-gradient(180deg, #E93B77 0%, #DA1F63 100%)"}}>
-                        {/*  onClick={ handleSubmit } */}
+                        background: "linear-gradient(180deg, #E93B77 0%, #DA1F63 100%)"}}
+                        onClick={ handleSubmit }>
                             SIGN IN</button>
                     </div>
 

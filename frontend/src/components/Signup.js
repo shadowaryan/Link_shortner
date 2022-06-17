@@ -25,8 +25,8 @@ const Signup = () => {
   const onFinish = (data) => {
     if(confirmPassword === password && email !== '' && password !== '' && userName !== '' && confirmPassword !== ''){
       
-      axios.post('http://localhost:8000/req/',{email: email, password: password})
-      // console.log(data);
+      axios.post('http://localhost:8000/req/',{email: email, password: password, username: userName})
+      console.log({email: email, password: password, username: userName});
       
       // axios({
       //   method: 'post',
