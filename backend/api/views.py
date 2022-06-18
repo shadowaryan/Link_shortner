@@ -80,8 +80,8 @@ def redirect_shortlink(request,id):
 def storing_user_info(request):
     # print(request.JSON)
     req_data = json.loads(request.body.decode('utf-8'))
-    data = User(email=req_data['email'],password=req_data['password'],username=req_data['username'])
-    data.save()
+    data = User.objects.create_user(email=req_data['email'],password=req_data['password'],username=req_data['username'])
+    # data.save()
     print(req_data)
     return HttpResponse("hello")
 
