@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User,Url,HeaderData
+from .models import Redirect, User,Url
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -12,7 +12,7 @@ class UrlSerializer(serializers.ModelSerializer):
         model = Url
         fields = '__all__'
 
-class HeaderDataSerializer(serializers.ModelSerializer):
+class RedirectSerializer(serializers.ModelSerializer):
     class Meta:
-        model = HeaderData
+        model = Redirect
         fields = '__all__'

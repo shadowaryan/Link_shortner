@@ -11,7 +11,17 @@ from django.contrib.auth.models import AbstractUser
 #     email = models.EmailField(max_length=128,unique=True)
 #     password = models.CharField(max_length=128)
 
-class User(AbstractUser):
+class BaseModel(models.Model):
+    """
+    Base model that other models will inherit from.
+    """
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class User(AbstractUser, BaseModel):
     email = models.EmailField(max_length=128,unique=True)
     password = models.CharField(max_length=128)
     username = models.CharField(max_length=128,unique=True)
@@ -21,19 +31,17 @@ class User(AbstractUser):
 
 
 
-class Url(models.Model):
+class Url(BaseModel):
     user= models.ForeignKey(User,on_delete=models.CASCADE)
     original_url = models.CharField(max_length=512)
     short_url = models.CharField(max_length=32)
-    counts = models.IntegerField()
 
 
     def __str__(self):
         return self.original_url
 
 
-class HeaderData(models.Model):
-    updated = models.DateTimeField(auto_now=True)
+class Redirect(BaseModel):
     url = models.ForeignKey(Url,on_delete=models.CASCADE)
     header_data = models.CharField(max_length=2048)
     ip_address = models.CharField(max_length=32)
