@@ -26,10 +26,10 @@ const LinkStats = () => {
 
     
     
-  const data = stats;//here
+  const data = stats;
   console.log(data)  
   const config = {
-    data,//here data=stats
+    data,
     xField: 'date',
     yField: 'clicks',
   };
