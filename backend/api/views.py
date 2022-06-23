@@ -105,14 +105,14 @@ def req_data(request):
         serializer = RedirectSerializer(data,many=True)
         return Response(serializer.data)
 
-def login_verification(request):
-    if request.method == 'POST':
-        req_data = json.loads(request.body.decode('utf-8'))
-        try:
-            if User.objects.filter(email=req_data['email'],password=req_data['password']).exists():
-                return redirect(create_short_link)
-        except:
-            return HttpResponse("login failed")
+# def login_verification(request):
+#     if request.method == 'POST':
+#         req_data = json.loads(request.body.decode('utf-8'))
+#         try:
+#             if User.objects.filter(email=req_data['email'],password=req_data['password']).exists():
+#                 return redirect(create_short_link)
+#         except:
+#             return HttpResponse("login failed")
 
 
 @api_view(['GET'])

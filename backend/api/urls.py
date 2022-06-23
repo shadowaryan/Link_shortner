@@ -16,6 +16,6 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('header/',views.req_data),
-    path('login_verification/',views.login_verification),
+    # path('login_verification/',views.login_verification),
     path('link-stats/<int:id>',views.link_stats),
 ]

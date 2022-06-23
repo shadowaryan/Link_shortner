@@ -4,7 +4,7 @@ import { Column } from '@ant-design/plots';
 import axios from "axios";
 
 const LinkStats = () => {
-    // const [stats, setStats] = useState([]);
+    const [stats_, setStats_] = useState([]);
     let stats=[]
     useEffect(()=>{
         axios.get('http://localhost:8000/link-stats/1')
@@ -18,6 +18,9 @@ const LinkStats = () => {
                     clicks : value[i]
                 });
             }
+            return stats
+        }).then(resp=>{
+            setStats_(stats)
         })
         console.log(stats)
         
@@ -26,10 +29,10 @@ const LinkStats = () => {
 
     
     
-  const data = stats;
-  console.log(data)  
+//   const data = stats;
+//   console.log(data)  
   const config = {
-    data,
+    data: stats_,
     xField: 'date',
     yField: 'clicks',
   };
