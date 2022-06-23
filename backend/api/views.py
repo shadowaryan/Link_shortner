@@ -19,7 +19,8 @@ from .serializers import UserSerializer,UrlSerializer,RedirectSerializer
 @api_view(['POST'])
 def create_short_link(request):
     user = User.objects.get(id=1)
-    original_url = request.POST.get('original_url')
+    req_data = json.loads(request.body.decode('utf-8'))
+    original_url = req_data['original_url']
     print(original_url)
     # short_url = md5(original_url.encode()).hexdigest()[:5]
     letters = string.ascii_letters
@@ -28,13 +29,13 @@ def create_short_link(request):
     print(short_url)
     print("ok")
     if Url.objects.filter(user=user,original_url=original_url).exists() == False:
-        url = Url(original_url=original_url,short_url=short_url,counts=0,user=user)
+        url = Url(original_url=original_url,short_url=short_url,user=user)
         url.save()
         print("added")
         
         return Response({
             'original_url': url.original_url,
-            'short_url': url.short_url,
+            'short_url': 'http://localhost:8000/redirect/'+url.short_url,
         })
         
     else :
@@ -115,23 +116,30 @@ def req_data(request):
 #             return HttpResponse("login failed")
 
 
+
+
+#no of click on specific date
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def link_stats(request,id):
     user = User.objects.get(id=1)
-    url = Url.objects.get(id=id,user=user)
-    # redirect_ = Redirect.objects.filter(url=url)
-    redirects = url.redirect_set.all()
-    
+    latest = (Url.objects.last()).id
+    latest = latest+1
+    print(latest)
     resp = {}
+    for x in range(latest):
+        if Redirect.objects.filter(url=x).exists()==True:
+            url = Url.objects.get(id=x,user=user)
+            # redirect_ = Redirect.objects.filter(url=url)
+            redirects = url.redirect_set.all()
+            # print(x)
+            
 
-    for redirect in redirects:
-        if redirect.created_at.strftime('%d-%m-%Y') not in resp:
-            resp[redirect.created_at.strftime('%d-%m-%Y')] = 1
-        else:
-            resp[redirect.created_at.strftime('%d-%m-%Y')] += 1
+            for redirect in redirects:
+                if redirect.created_at.strftime('%d-%m-%Y') not in resp:
+                    resp[redirect.created_at.strftime('%d-%m-%Y')] = 1
+                else:
+                    resp[redirect.created_at.strftime('%d-%m-%Y')] += 1
+
 
     return Response(resp)
-
-
-    

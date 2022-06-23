@@ -18,4 +18,5 @@ urlpatterns = [
     path('header/',views.req_data),
     # path('login_verification/',views.login_verification),
     path('link-stats/<int:id>',views.link_stats),
+    path('req_data',views.req_data)
 ]
