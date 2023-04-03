@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.db.models import Count
 
 from rest_framework.decorators import api_view , permission_classes
 from rest_framework.permissions import AllowAny
@@ -11,6 +12,7 @@ from hashlib import md5
 import random
 import string
 import json
+from operator import itemgetter
 
 from .models import Redirect, Url, User
 from .serializers import UserSerializer,UrlSerializer,RedirectSerializer
@@ -105,7 +107,7 @@ def req_data(request):
         data = Redirect.objects.all()
         serializer = RedirectSerializer(data,many=True)
         return Response(serializer.data)
-
+        
 # def login_verification(request):
 #     if request.method == 'POST':
 #         req_data = json.loads(request.body.decode('utf-8'))
@@ -118,28 +120,110 @@ def req_data(request):
 
 
 
+
 #no of click on specific date
+#id is of user auth user id
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def link_stats(request,id):
     user = User.objects.get(id=1)
-    latest = (Url.objects.last()).id
-    latest = latest+1
-    print(latest)
-    resp = {}
-    for x in range(latest):
-        if Redirect.objects.filter(url=x).exists()==True:
-            url = Url.objects.get(id=x,user=user)
-            # redirect_ = Redirect.objects.filter(url=url)
-            redirects = url.redirect_set.all()
-            # print(x)
+    # latest = (Url.objects.last()).id
+    # latest = latest+1
+    # print(latest)
+    # resp = {}
+    # total = (Redirect.objects.last()).id
+    # for x in range(latest):
+    #     if Redirect.objects.filter(url=x).exists()==True:
+    #         url = Url.objects.get(id=x,user=user)
+    #         # redirect_ = Redirect.objects.filter(url=url)
+    #         redirects = url.redirect_set.all()
+    #         # print(x)
             
 
+    #         for redirect in redirects:
+    #             if redirect.created_at.strftime('%d-%m-%Y') not in resp:
+    #                 resp[redirect.created_at.strftime('%d-%m-%Y')] = 1
+    #             else:
+    #                 resp[redirect.created_at.strftime('%d-%m-%Y')] += 1
+    # resp['total_click'] = total
+    # print(resp)
+    # return Response(resp)
+
+    urls = Url.objects.filter(user=user).all()
+    resp = {}
+    for url in urls:
+        if url.redirect_set.all().exists()==True:
+            redirects = url.redirect_set.all()
             for redirect in redirects:
                 if redirect.created_at.strftime('%d-%m-%Y') not in resp:
                     resp[redirect.created_at.strftime('%d-%m-%Y')] = 1
                 else:
                     resp[redirect.created_at.strftime('%d-%m-%Y')] += 1
-
-
+    resp['total_click'] = Redirect.objects.filter(url__user=user).count()
+    print(resp)
     return Response(resp)
+
+
+
+#top5 redirect links
+
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def top_links_(request,id):
+#     user = User.objects.get(id=1)
+#     latest = (Url.objects.last()).id  #50
+#     latest = latest+1
+#     print(latest)
+#     resp={}
+#     for x in range(latest):  # 1,4,5,6
+#         if Redirect.objects.filter(url=x).exists()==True:
+#             url = (Url.objects.get(id=x)).original_url
+#             count = Redirect.objects.filter(url=x).count()
+#             resp[url] = count
+    
+#     top_resp = dict(sorted(resp.items(), key = itemgetter(1), reverse = True)[:5])
+#     print(top_resp)
+#     return JsonResponse(top_resp)
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def top_links(request, id):
+    user = User.objects.get(id=1)
+
+    urls = Url.objects.filter(user=user).all()
+
+    print(urls)
+
+    resp = {}
+    for url in urls:
+        redirect_count = url.redirect_set.count()
+        resp[url.original_url] = redirect_count
+
+    top_resp = dict(sorted(resp.items(), key = itemgetter(1), reverse = True)[:5])
+    print(top_resp)
+    return Response(top_resp)
+
+
+
+
+#recent 10 created links
+
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def recent_links_(request,id):
+#     latest_id = (Url.objects.last()).id
+#     resp = {}
+#     for x in range(10): # 40 -> 50
+#         resp_id = latest_id-x
+#         resp[(Url.objects.get(id=resp_id)).original_url] = resp_id
+#     print(resp)
+#     return JsonResponse(resp)
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def recent_links(request, id):
+    user = User.objects.get(id=1)
+
+    urls = Url.objects.filter(user=user).order_by('-created_at').values('original_url', 'short_url')[:10]
+    print(urls)
+    return Response(urls)
+

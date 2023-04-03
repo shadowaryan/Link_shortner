@@ -10,6 +10,8 @@ const LinkStats = () => {
         axios.get('http://localhost:8000/link-stats/1')
         .then(resp =>{
             let resp_data = resp.data
+            console.log(resp_data.total_click)//total clicks
+            delete resp_data['total_click']
             let key = Object.keys(resp_data)
             let value = Object.values(resp_data)
             for (var i = 0; i < key.length; i++){

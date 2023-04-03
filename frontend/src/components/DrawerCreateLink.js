@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import { Input, Row, Col } from 'antd';
 
-const App = () => {
+const DrawerCreateLink = () => {
   const [visible, setVisible] = useState(false);
   const [original_url, setOriginal_url] = useState();
   const [resp_link , setResp_link] = useState();
@@ -29,7 +29,7 @@ const App = () => {
   return (
     <>
       <Button type="primary" onClick={showDrawer}>
-        Open
+        Create Link
       </Button>
       <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={visible}>
       <Input type="text" placeholder="Enter URL"  value={original_url} onChange={(e)=> setOriginal_url(e.target.value) }/>
@@ -42,4 +42,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default DrawerCreateLink;
