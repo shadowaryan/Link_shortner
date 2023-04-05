@@ -3,7 +3,7 @@ import { Row, Col, Drawer } from 'antd';
 import LinkStats from '../components/LinkStats';
 import TopLink from '../components/TopLink'
 import DrawerCreateLink from '../components/DrawerCreateLink'
-import RecentLink from '../components/Recent_Link';
+import RecentLink from '../components/RecentLink';
 import LinksInfo from '../components/LinksInfo';
 
 function Dashboard() {
@@ -17,7 +17,7 @@ function Dashboard() {
     </Row>
     <Row>
     <Col span={24}>
-        <LinkStats/>
+        {/* <LinkStats/> */}
       </Col>
       {/* <Col span={12}>
       <DrawerCreateLink/>

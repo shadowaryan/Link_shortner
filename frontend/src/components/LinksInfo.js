@@ -2,6 +2,8 @@ import { Card } from 'antd';
 import React, { useState } from 'react';
 import DrawerCreateLink from './DrawerCreateLink';
 import TopLink from './TopLink';
+import LinkStats from './LinkStats';
+import Recent_Link from './RecentLink';
 const tabList = [
   {
     key: 'tab1',
@@ -9,12 +11,17 @@ const tabList = [
   },
   {
     key: 'tab2',
+    tab: 'Links Stats',
+  },
+  {
+    key: 'tab3',
     tab: 'Top Links',
   },
 ];
 const contentList = {
-  tab1: <TopLink/>,
-  tab2: <p>content2</p>,
+  tab1:  <Recent_Link/>, //<TopLink/>,
+  tab2: <LinkStats/>,
+  tab3: <TopLink/>
 };
 
 

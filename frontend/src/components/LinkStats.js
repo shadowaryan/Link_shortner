@@ -14,12 +14,14 @@ const LinkStats = () => {
             delete resp_data['total_click']
             let key = Object.keys(resp_data)
             let value = Object.values(resp_data)
+            console.log(key.length)
             for (var i = 0; i < key.length; i++){
                 stats.push({
                     date : key[i],
                     clicks : value[i]
                 });
             }
+            console.log(stats)
             return stats
         }).then(resp=>{
             setStats_(stats)
@@ -38,7 +40,12 @@ const LinkStats = () => {
     xField: 'date',
     yField: 'clicks',
   };
-  return <Column {...config} />;
+  return(
+    <> 
+  <Column {...config} />
+  
+  </>
+  );
 };
 
 export default LinkStats;

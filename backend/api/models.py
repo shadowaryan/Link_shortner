@@ -22,12 +22,12 @@ class BaseModel(models.Model):
         abstract = True
 
 class User(AbstractUser, BaseModel):
+    # username = models.CharField(max_length=128,unique=True)
     email = models.EmailField(max_length=128,unique=True)
     password = models.CharField(max_length=128)
-    username = models.CharField(max_length=128,unique=True)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    # USERNAME_FIELD = 'username'
+    # REQUIRED_FIELDS = []
 
 
 
