@@ -1,7 +1,7 @@
 import './App.css';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import LinkStats from './components/LinkStats';
+import LinkStats from './components/DailyStats';
 import NavBars from './components/NavBars';
 import {BrowserRouter as Router,Routes ,Route} from "react-router-dom";
 import Dashboard from './pages/Dashboard';

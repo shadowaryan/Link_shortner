@@ -222,8 +222,22 @@ def top_links(request, id):
 @permission_classes([AllowAny])
 def recent_links(request, id):
     user = User.objects.get(id=1)
+    urls = Url.objects.filter(user=user).all()
 
-    urls = Url.objects.filter(user=user).order_by('-created_at').values('original_url', 'short_url')[:10]
-    print(urls)
-    return Response(urls)
+    resp = {}
+    
+
+    recent_urls = Url.objects.filter(user=user).order_by('-created_at').values('original_url', 'short_url')[:10]
+    # print(recent_urls)
+    new_urls = recent_urls
+
+    for url in urls:
+        redirect_count = url.redirect_set.count()
+        resp[url.original_url] = redirect_count
+    # print(resp)
+    
+    for url in recent_urls:
+        url['clicks'] = resp.get(url.get('original_url'))
+
+    return Response(recent_urls)
 

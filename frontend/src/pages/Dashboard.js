@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Drawer } from 'antd';
-import LinkStats from '../components/LinkStats';
+import LinkStats from '../components/DailyStats';
 import TopLink from '../components/TopLink'
 import DrawerCreateLink from '../components/DrawerCreateLink'
 import RecentLink from '../components/RecentLink';

@@ -18,12 +18,13 @@ const RecentLink = () => {
         
         let keys = Object.keys(resp_data)
         let value = Object.values(resp_data)
-        // console.log(keys.length)
+        console.log(keys)
         for (var i = 0; i < keys.length; i++){
             recent_link.push({
                 key : (i+1).toString(),
                 original_url : value[i].original_url,
                 short_url : "http://localhost:8000/redirect/"+value[i].short_url,
+                clicks : value[i].clicks
             });
         }
         console.log(recent_link,"pushed array data")
@@ -71,6 +72,13 @@ const columns = [
     key: 'short_url',
     ellipsis: true,
   },
+  {
+    title: 'Clicks',
+    dataIndex: 'clicks',
+    key: 'clicks',
+    ellipsis: true,
+  },
+
 //   {
 //     title: 'Long Column Long Column Long Column',
 //     dataIndex: 'address',

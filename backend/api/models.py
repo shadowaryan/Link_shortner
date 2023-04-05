@@ -35,6 +35,7 @@ class Url(BaseModel):
     user= models.ForeignKey(User,on_delete=models.CASCADE)
     original_url = models.CharField(max_length=512)
     short_url = models.CharField(max_length=32)
+    
 
 
     def __str__(self):
