@@ -1,4 +1,3 @@
-import { Card } from 'antd';
 import React from 'react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';

@@ -3,7 +3,7 @@ import { Form, Input, Row, Col } from "antd";
 import axios from "axios";
 
 
-import "antd/dist/antd.css";
+import 'antd/dist/reset.css';
 import "../index.css";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
